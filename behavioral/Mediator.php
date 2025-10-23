@@ -1,62 +1,83 @@
 <?php
-
 namespace behavioral;
 
 interface Mediator
 {
-    public function getWorker();
+    public function getWorker(Worker $sender, string $event): void;
 }
 
 abstract class Worker
 {
-    private string $name;
+    protected Mediator $mediator;
+    public string $name;
 
     /**
-     * @param string $name
+     * @param Mediator $mediator
      */
-    public function __construct(string $name)
+    public function __construct(Mediator $mediator)
     {
-        $this->name = $name;
+        $this->mediator = $mediator;
     }
 
     public function sayHello()
     {
-        printf('Hello!');
+        $this->mediator->getWorker($this, 'hello');
     }
-    public function work(): string
+    public function work()
     {
-        return $this->name . ' is working';
+        $this->mediator->getWorker($this, 'print');
     }
-    public function getWorker()
+
+    public function setName($name)
     {
-        printf($this->work() . PHP_EOL);
+        $this->name = $name;
     }
 }
 class InfoBase
 {
-    public function printInfo(Worker $worker)
+    public function printInfoDeveloper(string $text)
     {
-        printf($worker->sayHello() . $worker->work());
+        printf('Developer');
+        printf($text.PHP_EOL);
+    }
+    public function printInfoDesigner(string $text)
+    {
+        printf('Designer');
+        printf($text.PHP_EOL);
     }
 }
 class WorkerInfoBaseMediator implements Mediator
 {
-    private Worker $worker;
-    private InfoBase $infoBase;
+    private InfoBase $print;
 
     /**
-     * @param Worker $worker
-     * @param InfoBase $infoBase
+     * @param InfoBase $print
      */
-    public function __construct(Worker $worker, InfoBase $infoBase)
+    public function __construct()
     {
-        $this->worker = $worker;
-        $this->infoBase = $infoBase;
+        $this->print = new InfoBase();
     }
 
-    public function getWorker()
+    /**
+     * @param $sender
+     * @param $event
+     * @return void
+     */
+    public function getWorker($sender, $event): void
     {
-        $this->infoBase->printInfo($this->worker);
+        if ($event == 'print') {
+            if (get_class($sender) == 'behavioral\Developer') {
+                $this->print->printInfoDeveloper(' зовут ' . $sender->name);
+            } else {
+                $this->print->printInfoDesigner(' зовут ' . $sender->name);
+            }
+        } elseif ($event == 'hello') {
+            if (get_class($sender) == 'behavioral\Developer') {
+                $this->print->printInfoDeveloper(', ' . $sender->name.', привет! Легких релизов!');
+            } else {
+                $this->print->printInfoDesigner(', ' . $sender->name.', привет! Вдохновляющих котиков!');
+            }
+        }
     }
 
 }
@@ -71,10 +92,11 @@ class Designer extends Worker
 
 }
 
-$developer = new Developer('Boris');
-$designer = new Designer('Anna');
-$infoBase = new InfoBase();
+$mediator = new WorkerInfoBaseMediator();
+$developer = new Developer($mediator);
+$designer = new Designer($mediator);
+$developer->setName('Boris');
+$designer->setName('Anna');
 
-$developer->getWorker();
-$workerInfobaseMediator = new WorkerInfoBaseMediator($designer, $infoBase);
-$workerInfobaseMediator->getWorker();
+$developer->sayHello();
+$designer->sayHello();

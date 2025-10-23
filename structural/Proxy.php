@@ -22,20 +22,31 @@ class WorkerTime implements Worker
         return array_sum($this->hours) * 500;
     }
 }
-class WorkerProxy extends WorkerTime implements Worker
+class WorkerProxy implements Worker
 {
     protected int $salary = 0;
+    protected WorkerTime $salaryO;
 
+    public function __construct(WorkerTime $salary)
+    {
+        $this->salaryO = $salary;
+    }
+
+    public function closedHours($hours)
+    {
+        $this->salaryO->closedHours($hours);
+    }
     public function countSalary(): int
     {
         if ($this->salary === 0) {
-            $this->salary = parent::countSalary();
+            return $this->salaryO->countSalary();
         }
-        return $this->salary;
+        return 0;
     }
 }
 
-$workerProxy = new WorkerProxy();
+$work = new WorkerTime();
+$workerProxy = new WorkerProxy($work);
 $workerProxy->closedHours(10);
 $salary = $workerProxy->countSalary();
 $workerProxy->closedHours(10);

@@ -4,7 +4,7 @@ namespace generative;
 
 class Factory
 {
-    private string $name;
+    public string $name;
 
     /**
      * @param string $name
@@ -23,3 +23,7 @@ class FactoryWorker
 
     }
 }
+
+$factory = new FactoryWorker();
+$newFactory = $factory->make('Фабрика');
+var_dump($newFactory->name);

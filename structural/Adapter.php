@@ -49,6 +49,7 @@ class OutsourceWorkerAdapter implements NativeWorker
     }
 }
 
+/** GLONASS?? */
 $nativeDeveloper = new NativeDeveloper();
 $outsourceDeveloper = new OutsourceDeveloper();
 

@@ -70,6 +70,8 @@ class WorkerStorageAdapter
     }
 }
 
+/** GLONASS */
+
 $data = [
     1=>[
         "name" => "Boris"

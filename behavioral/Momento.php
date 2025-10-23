@@ -82,3 +82,5 @@ $task = new MomentoMore();
 $task->create();
 $momento = $task->saveToMomento();
 var_dump($task->getState() === $momento->getState());
+$task->done();
+var_dump($task->getState() === $momento->getState());

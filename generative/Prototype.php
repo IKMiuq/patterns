@@ -34,7 +34,9 @@ class Developer extends DeveloperPrototype
 
 }
 
+/** заявки СБКТС */
 $developer = new Developer();
 $developer2prototype = clone $developer;
 $developer2prototype->setName('Boris');
 var_dump($developer2prototype->getName());
+var_dump($developer2prototype->getPositions());

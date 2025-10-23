@@ -5,26 +5,37 @@ namespace generative;
 final class Singleton
 {
     private static ?self $instance = null;
-    private static string $name;
-    public static function selfName(string $name):void
+    private string $name;
+
+    private function __construct(string $name)
     {
-        self::$name = $name;
+        $this->name = $name;
     }
 
-    public static function getInstance(): self
+    public function selfName(): string
+    {
+        return $this->name;
+    }
+
+    public static function getInstance(string $name): self
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self($name);
         }
 
         return self::$instance;
     }
-    public function __clone():void
+
+    private function __clone(): void
     {
-        // FIXME: Implement __clone() method.
+        // Exception
     }
-    public function __wakeup():void
+
+    public function __wakeup(): void
     {
-        // FIXME: Implement __wakeup() method.
+        throw new \Exception("Cannot unserialize singleton");
     }
 }
+
+$singleton = Singleton::getInstance("test");
+var_dump($singleton->selfName());

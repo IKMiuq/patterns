@@ -1,4 +1,5 @@
 <?php
+/** Компоновщик */
 
 namespace structural;
 
