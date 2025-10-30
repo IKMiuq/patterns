@@ -49,21 +49,21 @@ class Header extends Part implements Renderable
 {
     public function render(): string
     {
-        return $this->getText();
+        return '<header>'.$this->getText().'</header>';
     }
 }
 class Body extends Part implements Renderable
 {
     public function render(): string
     {
-        return $this->getText();
+        return '<b>'.$this->getText().'</b>';
     }
 }
 class Footer extends Part implements Renderable
 {
     public function render(): string
     {
-        return $this->getText();
+        return '<footer>'.$this->getText().'</footer>';
     }
 }
 

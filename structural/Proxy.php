@@ -34,6 +34,7 @@ class WorkerProxy implements Worker
 
     public function closedHours($hours)
     {
+        $hours = $hours*2;
         $this->salaryO->closedHours($hours);
     }
     public function countSalary(): int
@@ -49,6 +50,7 @@ $work = new WorkerTime();
 $workerProxy = new WorkerProxy($work);
 $workerProxy->closedHours(10);
 $salary = $workerProxy->countSalary();
+var_dump($salary);
 $workerProxy->closedHours(10);
 $salary = $workerProxy->countSalary();
 
