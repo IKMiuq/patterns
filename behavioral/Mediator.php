@@ -14,7 +14,7 @@ abstract class Worker
     /**
      * @param Mediator $mediator
      */
-    public function __construct(Mediator $mediator)
+    public function setMediator(Mediator $mediator)
     {
         $this->mediator = $mediator;
     }
@@ -49,13 +49,20 @@ class InfoBase
 class WorkerInfoBaseMediator implements Mediator
 {
     private InfoBase $print;
+    private Developer $developer;
+    private Designer $designer;
 
     /**
-     * @param InfoBase $print
+     * @param $developer
+     * @param $designer
      */
-    public function __construct()
+    public function __construct($developer, $designer)
     {
         $this->print = new InfoBase();
+        $this->developer = $developer;
+        $this->designer = $designer;
+        $this->developer->setMediator($this);
+        $this->designer->setMediator($this);
     }
 
     /**
@@ -92,9 +99,9 @@ class Designer extends Worker
 
 }
 
-$mediator = new WorkerInfoBaseMediator();
-$developer = new Developer($mediator);
-$designer = new Designer($mediator);
+$developer = new Developer();
+$designer = new Designer();
+new WorkerInfoBaseMediator($developer, $designer);
 $developer->setName('Boris');
 $designer->setName('Anna');
 
