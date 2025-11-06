@@ -12,54 +12,88 @@ abstract class Worker
     public string $name;
 
     /**
+     * Устанавливает медиатор
      * @param Mediator $mediator
      */
-    public function __construct(Mediator $mediator)
+    public function setMediator(Mediator $mediator): void
     {
         $this->mediator = $mediator;
     }
 
-    public function sayHello()
+    /**
+     * Вызывает печать приветствия
+     * return void
+    */
+    public function sayHello(): void
     {
         $this->mediator->getWorker($this, 'hello');
     }
-    public function work()
+
+    /**
+     * Вызывает печать знакомства
+     * return void
+     */
+    public function work(): void
     {
         $this->mediator->getWorker($this, 'print');
     }
 
-    public function setName($name)
+    /**
+     * Устанавливает имя
+     * return void
+     */
+    public function setName($name): void
     {
         $this->name = $name;
     }
 }
+
 class InfoBase
 {
-    public function printInfoDeveloper(string $text)
+
+    /**
+     * Печатает приветствие для разработчика
+     * return void
+     */
+    public function printInfoDeveloper(string $text): void
     {
         printf('Developer');
         printf($text.PHP_EOL);
     }
-    public function printInfoDesigner(string $text)
+
+    /**
+     * Печатает приветствие для дизайнера
+     * return void
+     */
+    public function printInfoDesigner(string $text): void
     {
         printf('Designer');
         printf($text.PHP_EOL);
     }
 }
+
 class WorkerInfoBaseMediator implements Mediator
 {
     private InfoBase $print;
+    private Developer $developer;
+    private Designer $designer;
 
     /**
-     * @param InfoBase $print
+     * @param Developer $developer
+     * @param Designer $designer
      */
-    public function __construct()
+    public function __construct(Developer $developer, Designer $designer)
     {
         $this->print = new InfoBase();
+        $this->developer = $developer;
+        $this->designer = $designer;
+        $this->developer->setMediator($this);
+        $this->designer->setMediator($this);
     }
 
     /**
-     * @param $sender
+     * Распределяет работу в соответствии с полученным объектом
+     * @param Designer|Developer $sender
      * @param $event
      * @return void
      */
@@ -92,9 +126,9 @@ class Designer extends Worker
 
 }
 
-$mediator = new WorkerInfoBaseMediator();
-$developer = new Developer($mediator);
-$designer = new Designer($mediator);
+$developer = new Developer();
+$designer = new Designer();
+new WorkerInfoBaseMediator($developer, $designer);
 $developer->setName('Boris');
 $designer->setName('Anna');
 
