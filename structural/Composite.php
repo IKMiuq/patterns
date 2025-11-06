@@ -5,12 +5,22 @@ namespace structural;
 
 interface Renderable
 {
+    /**
+     * @return string
+     */
     public function render(): string;
 }
+
 class CompositeMail implements Renderable
 {
+    /**
+     * @var array
+     */
     private array $parts = [];
 
+    /**
+     * @return string
+     */
     public function render(): string
     {
         $result = '';
@@ -20,14 +30,22 @@ class CompositeMail implements Renderable
         return $result;
     }
 
-    public function addPart(Renderable $part)
+    /**
+     * @param Renderable $part
+     * @return void
+     */
+    public function addPart(Renderable $part): void
     {
         $this->parts[] = $part;
     }
 }
 
+
 abstract class Part
 {
+    /**
+     * @var string
+     */
     private string $text;
 
     /**
@@ -38,6 +56,9 @@ abstract class Part
         $this->text = PHP_EOL . $text;
     }
 
+    /**
+     * @return string
+     */
     public function getText(): string
     {
         return $this->text;
@@ -47,23 +68,34 @@ abstract class Part
 
 class Header extends Part implements Renderable
 {
+    /**
+     * @return string
+     */
     public function render(): string
     {
-        return '<header>'.$this->getText().'</header>';
+        return '<header>' . $this->getText() . '</header>';
     }
 }
+
 class Body extends Part implements Renderable
 {
+    /**
+     * @return string
+     */
     public function render(): string
     {
-        return '<b>'.$this->getText().'</b>';
+        return '<b>' . $this->getText() . '</b>';
     }
 }
+
 class Footer extends Part implements Renderable
 {
+    /**
+     * @return string
+     */
     public function render(): string
     {
-        return '<footer>'.$this->getText().'</footer>';
+        return '<footer>' . $this->getText() . '</footer>';
     }
 }
 

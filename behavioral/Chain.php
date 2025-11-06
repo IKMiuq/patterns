@@ -5,7 +5,7 @@ namespace behavioral;
 use structural\Service;
 
 /**
- *
+ *  abstract class Handler
  */
 abstract class Handler
 {
@@ -26,7 +26,7 @@ abstract class Handler
      * @param TaskInterface $task
      * @return array|null
      */
-    final public function handle(TaskInterface $task)
+    final public function handle(TaskInterface $task): ?array
     {
         $procesed = $this->processing($task);
         if ($procesed === null && $this->successor) {

@@ -136,7 +136,7 @@ class MomentoMore
      * @param Momento $momento
      * @return void
      */
-    public function restoreFromMomento(Momento $momento):void
+    public function restoreFromMomento(Momento $momento): void
     {
         $this->state = $momento->getState();
     }
